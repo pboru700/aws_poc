@@ -23,3 +23,7 @@ Now imagine that the development team asks for advice on:
 1. Building a CI/CD pipeline
 2. Ensuring proper monitoring and high availability
 
+Which technology/product choices would you make and why? What advice would you give the developers
+on both subjects? What would the delivery pipeline look like?
+
+### Solution
