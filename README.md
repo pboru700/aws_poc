@@ -15,6 +15,9 @@ For simplicity, you could use the official nginx image as an example hello world
 In order to ensure proper quality, the solution must have support for running multiple environments, prod
 and test.
 
+### Solution
+Due to small scale of infrastructure for this poc, decision was made to run docker container over AWS ECS. With bigger scale EKS cluster should be considered.
+
 ## Part 2: Conceptualize and illustrate
 Now imagine that the development team asks for advice on:
 1. Building a CI/CD pipeline
