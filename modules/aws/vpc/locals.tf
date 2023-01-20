@@ -20,4 +20,6 @@ locals {
     }
     if length(v.public_subnets) > 0
   ])), {})
+
+  vpc_ids = { for k, v in var.vpcs : k => aws_vpc.this[k].id }
 }
