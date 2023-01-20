@@ -23,11 +23,12 @@ resource "aws_vpc_ipv4_cidr_block_association" "this" {
   cidr_block = each.value.secondary_cidr_blocks
 }
 
-resource "aws_subnet" "private" {
-  for_each = local.private_subnets
+resource "aws_subnet" "public" {
+  for_each = local.public_subnets
 
-  vpc_id     = aws_vpc.this[each.value.vpc_name].id
-  cidr_block = each.value.subnet_cidr
+  vpc_id            = aws_vpc.this[each.value.vpc_name].id
+  cidr_block        = each.value.cidr
+  availability_zone = each.value.availability_zone
 
   tags = merge(
     {
@@ -37,11 +38,12 @@ resource "aws_subnet" "private" {
   )
 }
 
-resource "aws_subnet" "public" {
-  for_each = local.public_subnets
+resource "aws_subnet" "private" {
+  for_each = local.private_subnets
 
-  vpc_id     = aws_vpc.this[each.value.vpc_name].id
-  cidr_block = each.value.subnet_cidr
+  vpc_id            = aws_vpc.this[each.value.vpc_name].id
+  cidr_block        = each.value.cidr
+  availability_zone = each.value.availability_zone
 
   tags = merge(
     {
@@ -52,12 +54,40 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_internet_gateway" "this" {
-  for_each = {
-    for k, v in var.vpcs : k => v
-    if length(v.public_subnets) > 0
-  }
+  for_each = local.vpcs_containing_public_subnets
 
   vpc_id = aws_vpc.this[each.key].id
+
+  tags = merge(
+    {
+      "Name" = each.key
+    },
+    each.value.tags,
+    var.common_tags
+  )
+}
+
+resource "aws_eip" "nat" {
+  for_each = local.vpcs_containing_public_subnets
+
+  vpc = true
+
+  tags = merge(
+    {
+      "Name" = each.key
+    },
+    each.value.tags,
+    var.common_tags
+  )
+
+  depends_on = [aws_internet_gateway.this[each.key].id]
+}
+
+resource "aws_nat_gateway" "this" {
+  for_each = local.vpcs_containing_public_subnets
+
+  allocation_id = aws_eip.nat[each.key].id
+  subnet_id     = element(local.public_subnet_ids[each.key], 0)
 
   tags = merge(
     {
@@ -83,7 +113,7 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table" "private" {
-  count = local.private_subnets
+  for_each = local.private_subnets
 
   vpc_id = aws_vpc.this[each.key].id
 
@@ -106,6 +136,14 @@ resource "aws_route" "public_igw" {
   timeouts {
     create = "5m"
   }
+}
+
+resource "aws_route" "private_nat" {
+  for_each = local.private_subnets
+
+  route_table_id         = aws_route_table.private[each.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.nat[each.key].id
 }
 
 resource "aws_route_table_association" "public" {
