@@ -1,6 +1,9 @@
 # aws_poc
 
-Purpose of this repo is to prepare a POC based on two requirements:
+Imagine that you are working in a DevOps team, which is supporting other developers in building
+infrastructure, pipelines etc.
+One of the other development teams have built a shopping cart service for the e-commerce website. The
+service exposes an HTTP REST API on port 80 – and has been configured with a working Dockerfile.
 
 ## Part 1: Hosting the application
 Imagine that you are tasked with provisioning cloud infrastructure for hosting the service mentioned
@@ -16,7 +19,7 @@ In order to ensure proper quality, the solution must have support for running mu
 and test.
 
 ### Solution
-Due to small scale of infrastructure for this poc, decision was made to run docker container over AWS ECS. With bigger scale EKS cluster should be considered.
+Due to small scale of infrastructure for this poc, decision was made to run docker container over AWS ECS under single VPC. With bigger scale EKS cluster should be considered. 
 
 ## Part 2: Conceptualize and illustrate
 Now imagine that the development team asks for advice on:
