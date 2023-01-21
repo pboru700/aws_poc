@@ -1,7 +1,7 @@
-variable "vpcs" {
+variable "ecr_repositories" {
   type        = map(any)
   default     = {}
-  description = "Object holding details for creating multiple vpcs with dependent objects"
+  description = "Map of ecr repositories to create"
 }
 
 variable "common_tags" {
