@@ -28,7 +28,13 @@ variable "security_group" {
       cidr_blocks = list(string)
     })))
   }))
-  description = "List of subnet IDs to attach LoadBalancer"
+  description = "Map of security group configs"
+}
+
+variable "lb_config" {
+  type        = map(any)
+  default     = {}
+  description = "Map containing configuration for target groups and listeners"
 }
 
 variable "common_tags" {
