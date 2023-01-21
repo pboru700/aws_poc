@@ -19,7 +19,7 @@ In order to ensure proper quality, the solution must have support for running mu
 and test.
 
 ### Solution
-Due to small scale of infrastructure for this poc, decision was made to run docker container over AWS ECS under single VPC. With bigger scale EKS cluster should be considered. 
+Due to small scale of infrastructure for this poc, decision was made to run docker container over AWS ECS under single VPC. With bigger scale EKS cluster should be considered. For network separation - public and private subnets have been choosen. Also private subnets will access internet through NAT GW. ECS container will expose given port at private subnets. Access to private subnets will be possible from public subnets. Public subnets, as name suggest will be exposed to outside world using IGW. 
 
 ## Part 2: Conceptualize and illustrate
 Now imagine that the development team asks for advice on:
