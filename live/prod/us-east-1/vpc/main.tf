@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "git@github.com:pboru700/aws_poc.git//modules/aws/vpc?ref=vpc1.0.0"
+  source = "git@github.com:pboru700/aws_poc.git//modules/aws/vpc?ref=vpc-1.0.0"
 
   vpcs = {
     prod = {
