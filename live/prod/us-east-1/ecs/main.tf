@@ -14,7 +14,7 @@ module "ecr" {
       }
       load_balancer = {
         target_group_arn = "arn:aws:elasticloadbalancing:us-west-1:123456789012:targetgroup/hello-world/20cfe21448b66314"
-        container_port   = 80
+        container_port   = 8080
       }
       family                = "service"
       network_mode          = "awsvpc"
@@ -22,8 +22,8 @@ module "ecr" {
 
       ingress_rules = [{
         protocol    = "tcp"
-        from_port   = 80
-        to_port     = 80
+        from_port   = 8080
+        to_port     = 8080
         cidr_blocks = ["0.0.0.0/0"]
       }]
       egress_rules = [{
