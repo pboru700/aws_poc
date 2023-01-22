@@ -7,6 +7,7 @@ service exposes an HTTP REST API on port 80 – and has been configured with a w
 
 ## File structure
 Repository file structure is shown below:
+
 ![Alt text](images/file_structure.png?raw=true "File structure")
 
 Where "docker" contain Dockerfile for nginx demo hello-world base image. This image should be build and pushed to AWS ECR private image registry. Private registry and base image have been added to easily maintain base functionalities for any future releases.
