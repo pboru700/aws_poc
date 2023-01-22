@@ -13,7 +13,7 @@ resource "aws_security_group" "this" {
     for_each = var.security_group.ingress_rules
 
     content {
-      protocol    = ingress.value["protocol"]
+      protocol    = try(ingress.value["protocol"], "tcp")
       from_port   = ingress.value["from_port"]
       to_port     = ingress.value["to_port"]
       cidr_blocks = ingress.value["cidr_blocks"]
@@ -24,7 +24,7 @@ resource "aws_security_group" "this" {
     for_each = var.security_group.egress_rules
 
     content {
-      protocol    = egress.value["protocol"]
+      protocol    = try(ingress.value["egress"], "tcp")
       from_port   = egress.value["from_port"]
       to_port     = egress.value["to_port"]
       cidr_blocks = egress.value["cidr_blocks"]
