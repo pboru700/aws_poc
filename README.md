@@ -7,32 +7,8 @@ service exposes an HTTP REST API on port 80 – and has been configured with a w
 
 ## File structure
 Repository file structure is shown below:
-.
-├── docker
-│   └── hello-world
-├── live
-│   ├── prod
-│   │   └── us-east-1
-│   │       ├── alb
-│   │       ├── ecr
-│   │       │   └── config
-│   │       ├── ecs
-│   │       │   └── configs
-│   │       └── vpc
-│   └── test
-│       └── us-east-1
-│           ├── alb
-│           ├── ecr
-│           │   └── config
-│           ├── ecs
-│           │   └── configs
-│           └── vpc
-└── modules
-    └── aws
-        ├── alb
-        ├── ecr
-        ├── ecs
-        └── vpc
+
+![Alt text](images/file_structure.png?raw=true "File structure")
 
 Where "docker" contain Dockerfile for nginx demo hello-world base image. This image should be build and pushed to AWS ECR private image registry. Private registry and base image have been added to easily maintain base functionalities for any future releases.
 "live" directory holds infrastructure deployments using modules defined in "modules". This directory holds infrastructure deployment for every environments - "prod" and "test" in this example. Every environment contain infrastructure definitions for different AWS regions. Global resources like IAM, which are not dependent on regions, should be put inside e.g. "global" directory, adjacent to region directories. Going deeper - every region have separate infrastructure deployment definition, some of which could contain additional config files in "configs" folders.
