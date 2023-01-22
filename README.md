@@ -5,6 +5,39 @@ infrastructure, pipelines etc.
 One of the other development teams have built a shopping cart service for the e-commerce website. The
 service exposes an HTTP REST API on port 80 – and has been configured with a working Dockerfile.
 
+## File structure
+Repository file structure is shown below:
+.
+├── docker
+│   └── hello-world
+├── live
+│   ├── prod
+│   │   └── us-east-1
+│   │       ├── alb
+│   │       ├── ecr
+│   │       │   └── config
+│   │       ├── ecs
+│   │       │   └── configs
+│   │       └── vpc
+│   └── test
+│       └── us-east-1
+│           ├── alb
+│           ├── ecr
+│           │   └── config
+│           ├── ecs
+│           │   └── configs
+│           └── vpc
+└── modules
+    └── aws
+        ├── alb
+        ├── ecr
+        ├── ecs
+        └── vpc
+
+Where "docker" contain Dockerfile for nginx demo hello-world base image. This image should be build and pushed to AWS ECR private image registry. Private registry and base image have been added to easily maintain base functionalities for any future releases.
+"live" directory holds infrastructure deployments using modules defined in "modules". This directory holds infrastructure deployment for every environments - "prod" and "test" in this example. Every environment contain infrastructure definitions for different AWS regions. Global resources like IAM, which are not dependent on regions, should be put inside e.g. "global" directory, adjacent to region directories. Going deeper - every region have separate infrastructure deployment definition, some of which could contain additional config files in "configs" folders.
+"modules" directory holds definitions of terraform modules, divided by terraform provider - only "aws" have been used for purpose of this POC.
+
 ## Part 1: Hosting the application
 Imagine that you are tasked with provisioning cloud infrastructure for hosting the service mentioned
 above.
@@ -19,7 +52,7 @@ In order to ensure proper quality, the solution must have support for running mu
 and test.
 
 ### Solution
-Due to small scale of infrastructure for this poc, decision was made to run docker container over AWS ECS under single VPC. With bigger scale EKS cluster should be considered. For network separation - public and private subnets have been choosen. Also private subnets will access internet through NAT GW. ECS container will expose given port at private subnets. Access to private subnets will be possible from public subnets. Public subnets, as name suggest will be exposed to outside world using IGW. 
+Due to small scale of infrastructure for this poc, decision was made to run docker container over AWS ECS under single VPC. With bigger scale EKS cluster should be considered. For network separation - public and private subnets have been choosen. Also private subnets will access internet through NAT GW. ECS container will expose given port at private subnets. Access to private subnets will be possible from public subnets. Public subnets, as name suggest will be exposed to outside world using IGW. For bigger scale network separatiuon over multiple VPCs should be cosnidered. 
 
 ## Part 2: Conceptualize and illustrate
 Now imagine that the development team asks for advice on:
