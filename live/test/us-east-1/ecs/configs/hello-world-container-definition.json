@@ -1,0 +1,13 @@
+{
+  "image": "123456789012.dkr.ecr.us-east-1.amazonaws.com/hello-world-prod:1.0.0",
+  "cpu": 1024,
+  "memory": 2048,
+  "name": "hello-world",
+  "networkMode": "awsvpc",
+  "portMappings": [
+    {
+      "containerPort": 80,
+      "hostPort": 80
+    }
+  ]
+}

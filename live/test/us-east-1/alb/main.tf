@@ -1,5 +1,5 @@
 module "alb" {
-  source = "git@github.com:pboru700/aws_poc.git//modules/aws/alb?ref=alb1.0.0"
+  source = "git@github.com:pboru700/aws_poc.git//modules/aws/alb?ref=alb-1.1.0"
 
   name       = "hello-world"
   vpc_id     = "vpc-abc123"
